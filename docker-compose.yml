@@ -5,10 +5,6 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres_password
   nginx:
-    depends_on:
-      - api
-      - client
-    restart: always
     build:
       dockerfile: Dockerfile.dev
       context: ./nginx
@@ -20,7 +16,7 @@ services:
       context: ./api
     volumes:
       - /app/node_modules
-      - ./server:/app
+      - ./api:/app
     environment:
       - PGUSER=postgres
       - PGHOST=postgres
@@ -28,8 +24,6 @@ services:
       - PGPASSWORD=postgres_password
       - PGPORT=5432
   client:
-    environment:
-      - WDS_SOCKET_PORT=0
     build:
       dockerfile: Dockerfile.dev
       context: ./client
